@@ -1,0 +1,15 @@
+name: souphub
+
+services:
+  souph-service:
+    container_name: souph-service
+    restart: always
+    build:
+      context: ./../../
+      dockerfile: ./deploy/docker/Dockerfile
+
+    mem_limit: 128m
+    cpus: 0.2
+    env_file: .env
+    ports:
+      - "127.0.0.1:${SOUPHUB_HTTP_EXTERNAL_PORT}:${SOUPHUB_HTTP_PORT}"
