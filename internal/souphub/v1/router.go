@@ -39,7 +39,7 @@ func NewRounter(config RouterConfig) (http.Handler, error) {
 	router := &Router{chi.NewRouter(), service}
 	router.Use(render.SetContentType(render.ContentTypeJSON))
 
-	router.Post("/connect", router.Connect)
+	router.Post("/share", router.Connect)
 	router.Get("/share", router.Share)
 
 	return router, nil
