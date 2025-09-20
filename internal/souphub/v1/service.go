@@ -40,26 +40,38 @@ func NewService(config ServiceConfig) (*Service, error) {
 
 func (s *Service) Connect(ctx context.Context, data *dtosv1.MasterHubConnect) (*dtosv1.MasterHubConnected, error) {
 
+	done := []*models.Master{}
+
 	for t, m := range data.Masters {
-		s.registry.Create(ctx, t, m)
+		if m.Host == "" || m.Name == "" {
+			continue
+		}
+
+		m.Expiration = 0
+
+		if err := s.registry.Create(ctx, t, m); err == nil {
+			done = append(done, m)
+		}
 	}
 
-	return &dtosv1.MasterHubConnected{Success: true}, nil
+	return &dtosv1.MasterHubConnected{Success: true, Connected: done}, nil
 }
 
 func (s *Service) Share(ctx context.Context, data *dtosv1.Share) (*dtosv1.Hub, error) {
-	if ok := s.registry.IsExists(ctx, data.Token); !ok {
+	mtoken := models.MasterToken(data.Token)
+
+	if ok := s.registry.IsExists(ctx, mtoken); !ok {
 		return nil, errors.New("ERR_INVALID_DATA")
 	}
 
-	m := s.registry.Get(ctx, data.Token)
-	
+	m := s.registry.Get(ctx, mtoken)
+
 	srvs := s.repository.FindAll(ctx)
 
 	buf := models.GameServers{}
 
 	for _, s := range m.Addrs {
-		buf[s] = srvs[s]
+		buf[models.GameServerAddr(s)] = srvs[models.GameServerAddr(s)]
 	}
 
 	return &dtosv1.Hub{
@@ -68,4 +80,14 @@ func (s *Service) Share(ctx context.Context, data *dtosv1.Share) (*dtosv1.Hub, e
 		Company:     s.company,
 		Servers:     buf,
 	}, nil
+}
+
+func (s *Service) Masters(ctx context.Context) (*dtosv1.Masters, error) {
+	var out dtosv1.Masters
+
+	for _, v := range s.registry.GetAll(ctx) {
+		out.Masters = append(out.Masters, v)
+	}
+
+	return &out, nil
 }

@@ -14,7 +14,7 @@ func NewRepository(srvs models.GameServers) (*Repository, error) {
 	return &Repository{servers: srvs}, nil
 }
 
-func (r *Repository) Create(ctx context.Context, addr string, srv *models.GameServer) error {
+func (r *Repository) Create(ctx context.Context, addr models.GameServerAddr, srv *models.GameServer) error {
 	if !r.IsExists(ctx, addr) {
 		r.servers[addr] = srv
 	}
@@ -38,7 +38,7 @@ func (r *Repository) CreateAll(ctx context.Context, srvs models.GameServers) err
 	return nil
 }
 
-func (r *Repository) IsExists(ctx context.Context, addr string) bool {
+func (r *Repository) IsExists(ctx context.Context, addr models.GameServerAddr) bool {
 	_, ok := r.servers[addr]
 	return ok
 }
