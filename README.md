@@ -11,7 +11,7 @@ This is part of the `soup` system that will be released very soon.
 
 ### Configuration
 Confifure `souph.json` for yourself (remove all comments):
-```json
+```json5
 {
   // your hub name 
   "name": "Rosenound CS2 Project Hub",
@@ -55,7 +55,7 @@ Confifure `souph.json` for yourself (remove all comments):
 
 Request is sent from the `master hub` to `your hub`: \
 `https://<your_domain>/souph/share?access_token=<?>`\
-```json
+```json5
 // Request raw body
 {
   "masters": {
@@ -80,7 +80,7 @@ Request is sent from the `master hub` to `your hub`: \
 #### `GET`
 Request is sent from the `master hub` to `your hub` (periodic): \
 `https://<your_domain>/souph/share?access_token=<?>`\
-```json
+```json5
 // Request raw body
 {
   "master_token": "<your-master-hub-token>"
