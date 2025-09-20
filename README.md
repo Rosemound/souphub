@@ -54,15 +54,18 @@ Confifure `souph.json` for yourself (remove all comments):
 #### `POST`
 
 Request is sent from the `master hub` to `your hub`: \
-`https://<your_domain>/souph/connect?access_token=<?>`\
+`https://<your_domain>/souph/share?access_token=<?>`\
 ```json
 // Request raw body
 {
   "masters": {
     "<your-master-hub-token>": {
 
-      // Master hub uniq name
-      "name": "hub.rosemound.ru",
+      // Master hub name
+      "name": "Rosemound Master Hub",
+
+      // Master hub host
+      "host": "hub.rosemound.ru",
       
       // Sharing servers
       "servers": [
@@ -86,7 +89,7 @@ Request is sent from the `master hub` to `your hub` (periodic): \
 ```json
 // Response (example)
 {
-  "name": "Rosenound CS2 Project Hub",
+  "name": "Rosemound CS2 Project Hub",
   
   "company": {
     "name": "Rosemound",
@@ -106,4 +109,31 @@ Request is sent from the `master hub` to `your hub` (periodic): \
   }
 }
 
+```
+
+#### `GET`
+Get registered active masters: \
+`https://<your_domain>/souph/masters?access_token=<?>`\
+
+```json5
+// Response (example)
+{
+  "masters": [
+    {
+      // Hub name
+      "name": "Rosemound Master Hub",
+
+      // Hub host
+      "host": "hub.rosemound.ru",
+
+      // Hub registration exp time
+      "expiration": 1758536958,
+
+      // Requested by master hub servers
+      "servers": [
+        "173.12.31.144:53111"
+      ]
+    }
+  ]
+}
 ```
