@@ -39,8 +39,9 @@ func NewRounter(config RouterConfig) (http.Handler, error) {
 	router := &Router{chi.NewRouter(), service}
 	router.Use(render.SetContentType(render.ContentTypeJSON))
 
-	router.Post("/connect", router.Connect)
+	router.Post("/share", router.Connect)
 	router.Get("/share", router.Share)
+	router.Get("/masters", router.Masters)
 
 	return router, nil
 }
@@ -82,3 +83,17 @@ func (r *Router) Share(w http.ResponseWriter, req *http.Request) {
 	render.Status(req, http.StatusCreated)
 	render.Render(w, req, body)
 }
+
+func (r *Router) Masters(w http.ResponseWriter, req *http.Request) {
+
+	body, err := r.service.Masters(req.Context())
+
+	if err != nil {
+		render.Render(w, req, dtosv1.NewHttpErr(http.StatusBadRequest, err))
+		return
+	}
+
+	render.Status(req, http.StatusCreated)
+	render.Render(w, req, body)
+}
+

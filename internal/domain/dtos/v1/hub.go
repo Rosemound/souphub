@@ -26,7 +26,8 @@ func (mhcon *MasterHubConnect) Bind(r *http.Request) error {
 }
 
 type MasterHubConnected struct {
-	Success bool `json:"success"`
+	Success   bool             `json:"success"`
+	Connected []*models.Master `json:"connected"`
 }
 
 func (mhcon *MasterHubConnected) Render(w http.ResponseWriter, r *http.Request) error {
