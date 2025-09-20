@@ -86,7 +86,7 @@ Request is sent from the `master hub` to `your hub` (periodic): \
   "master_token": "<your-master-hub-token>"
 }
 ```
-```json
+```json5
 // Response (example)
 {
   "name": "Rosemound CS2 Project Hub",
